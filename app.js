@@ -61,3 +61,8 @@ app.use(
 
 
 module.exports = app;
+
+
+// services
+const proxy = require('./lib/proxy');
+proxy.startService();
