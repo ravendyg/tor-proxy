@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "setup": "npm i && tsd install",
+    "setup": "npm i && tsd install && mkdir ./tor/data-dir && mkdir ./tor/data-dir/tor1 && mkdir ./tor/data-dir/tor2 && mkdir ./tor/data-dir/tor3 && mkdir ./tor/data-dir/tor4 && mkdir ./tor/data-dir/tor5",
     "start": "node ./bin/www"
   },
   "dependencies": {
