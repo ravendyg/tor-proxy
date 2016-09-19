@@ -3,15 +3,23 @@
 
 var express = require('express');
 var router = express.Router();
+var proxy = require('../lib/proxy');
+var errServ = require('../lib/error');
 
 /* GET home page. */
 router.get(
   '/',
-  ( req, webRes ) =>
+  ( req, webRes, next ) =>
   {
-    webRes.json( { status: 'accepted' });
-
     console.log(req.headers['x-real-ip']);
+    if ( req.query.url && req.headers['x-real-ip'] && req.headers['x-real-ip'].match('192.168.1') )
+    {
+      proxy.makeRequest( req.query.url ).pipe( webRes );
+    }
+    else
+    {
+      next( errServ.create(400, 'bad request') );
+    }
   }
 );
 

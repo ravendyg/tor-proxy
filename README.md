@@ -1,10 +1,4 @@
-Next iteration of my struggle with maps.nskgortrans.ru.
-
-Plan to centralize data collection and then distribute them using sockets.
-
-Rewrite mobile app using Java.
-
-Use existing Ionic 2 app as a desktop version;
+Multiple tor instances manager.
 
 &nbsp;
 
