@@ -6,7 +6,6 @@ var router = express.Router();
 var proxy = require('../lib/proxy');
 var errServ = require('../lib/error');
 
-/* GET home page. */
 router.get(
   '/',
   ( req, webRes, next ) =>

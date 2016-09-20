@@ -1,6 +1,6 @@
 {
-  "name": "gortrans-server-2",
-  "version": "0.0.0",
+  "name": "tor-proxy",
+  "version": "0.0.1",
   "private": true,
   "scripts": {
     "setup": "npm i && tsd install && mkdir ./tor/data-dir && mkdir ./tor/data-dir/tor1 && mkdir ./tor/data-dir/tor2 && mkdir ./tor/data-dir/tor3 && mkdir ./tor/data-dir/tor4 && mkdir ./tor/data-dir/tor5",
@@ -16,7 +16,6 @@
     "morgan": "1.7.0",
     "request": "2.74.0",
     "serve-favicon": "2.3.0",
-    "socket.io": "1.4.8",
     "socks5-http-client": "1.0.2"
   },
   "devDependencies": {
