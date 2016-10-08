@@ -11,7 +11,9 @@ router.get(
   ( req, webRes, next ) =>
   {
     console.log(req.headers['x-real-ip']);
-    if ( req.query.url && req.headers['x-real-ip'] && req.headers['x-real-ip'].match('192.168.1') )
+    if ( req.query.url && req.headers['x-real-ip'] && req.headers['x-real-ip'].match('192.168.1') ||
+        req.ip.match('127.0.0.1')
+    )
     {
       proxy.makeRequest( req.query.url ).pipe( webRes );
     }
