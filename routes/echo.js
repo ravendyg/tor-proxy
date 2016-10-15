@@ -10,7 +10,7 @@ router.get(
   '/',
   ( req, webRes, next ) =>
   {
-    console.log(req.headers['x-real-ip']);
+    console.log(req.headers['x-real-ip'] || req.ip );
     if ( req.query.url && req.headers['x-real-ip'] && req.headers['x-real-ip'].match('192.168.1') ||
         req.ip.match('127.0.0.1') || req.ip.match('192.168')
     )
