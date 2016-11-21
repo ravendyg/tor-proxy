@@ -15,7 +15,12 @@ router.get(
         req.ip.match('127.0.0.1') || req.ip.match('192.168')
     )
     {
-      proxy.makeRequest( req.query.url ).pipe( webRes );
+      let request = proxy.makeRequest( req.query.url );
+
+      request.on('error', reqErrorHandler.bind(request, webRes) );
+      webRes.on('error', resErrorHandler );
+
+      request.pipe(webRes);
     }
     else
     {
@@ -23,5 +28,18 @@ router.get(
     }
   }
 );
+
+function reqErrorHandler(res, err)
+{
+  console.error(err.message);
+  console.error(this.href);
+  res.status(500).send();
+}
+
+function resErrorHandler(err)
+{
+  console.error(err);
+  this.status(500).send();
+}
 
 module.exports = router;
