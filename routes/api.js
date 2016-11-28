@@ -13,6 +13,9 @@ router.get(
     wiki.on('error', reqErrorHandler.bind(wiki, res) );
     res.on('error', resErrorHandler );
 
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+
     wiki.pipe(res);
   }
 );
