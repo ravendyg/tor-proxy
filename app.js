@@ -10,7 +10,8 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
 // var routes = require('./routes/index');
-var echo = require('./routes/echo');
+const echo = require('./routes/echo');
+const apiRoute = require('./routes/api');
 
 var app = express();
 
@@ -28,6 +29,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // app.use('/', routes);
 app.use('/echo', echo);
+app.use('/api', apiRoute);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -37,10 +39,6 @@ app.use(function(req, res, next) {
 });
 
 // error handlers
-
-// production error handler
-// no stacktraces leaked to user
-
 app.use(
   function(err, req, res, next)
   {
