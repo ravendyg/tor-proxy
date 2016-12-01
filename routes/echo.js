@@ -5,7 +5,7 @@ var express = require('express');
 var router = express.Router();
 var proxy = require('../lib/proxy');
 var errServ = require('../lib/error');
-const utils = require('../utils');
+const utils = require('../lib/utils');
 
 router.get(
   '/',
