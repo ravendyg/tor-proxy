@@ -1,3 +1,2 @@
 node_modules/
-typings/
-tor/data-dir/tor*
+tor
