@@ -3,14 +3,22 @@ Multiple tor instances manager.
 &nbsp;
 
 ### Dependecies
-node 6.5.0, tsd 0.6.5, tor
+node 6.5.0, tor
 
 &nbsp;
 
 ### Installation
 ```
-npm run setup
+npm i
 ```
+
+&nbsp;
+
+### Setup
+Requires two ports for each tor instance.
+
+To override default config create ./lib/config.json file and put new values there.
+
 
 &nbsp;
 
