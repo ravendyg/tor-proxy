@@ -1,0 +1,1 @@
+docker run -d --name tor-proxy -p 3014:3014 tor-proxy

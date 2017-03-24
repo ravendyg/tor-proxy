@@ -1,4 +1,4 @@
-/// <reference path="../lib/index.d.ts" />
+/* global process */
 'use strict';
 
 var express = require('express');
@@ -7,14 +7,13 @@ var proxy = require('../lib/proxy');
 var errServ = require('../lib/error');
 const utils = require('../lib/utils');
 
+const authToken = process.env.AUTH_TOKEN;
+
 router.get(
   '/',
   ( req, webRes, next ) =>
   {
-    // console.log(req.headers['x-real-ip'] || req.ip );
-    if ( req.query.url && req.headers['x-real-ip'] && req.headers['x-real-ip'].match('192.168.1') ||
-        req.ip.match('127.0.0.1') || req.ip.match('192.168') || req.ip.match('::1')
-    )
+    if (req.headers['x-auth-token'] === authToken)
     {
       let request = proxy.makeRequest( req.query.url );
 
