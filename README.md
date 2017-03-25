@@ -19,6 +19,7 @@ Requires two ports for each tor instance.
 
 To override default config create ./lib/config.json file and put new values there.
 
+Provide AUTH_TOKEN in config.json
 
 &nbsp;
 
@@ -32,9 +33,8 @@ npm start
 
 Build
 ```
-docker build --build-arg AUTH_TOKEN=<auth_token> -t tor-proxy .
+docker build -t tor-proxy .
 ```
-<auth_token> - should be passed as "x-auth-token" header.
 
 Run
 ```

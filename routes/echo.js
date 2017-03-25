@@ -4,24 +4,21 @@
 var express = require('express');
 var router = new express.Router();
 var proxy = require('../lib/proxy');
-var errServ = require('../lib/error');
 const utils = require('../lib/utils');
 const config = require('../lib/config');
 
-const authToken = process.env.AUTH_TOKEN || config.AUTH;
-
 router.get(
   '/',
-  (req, webRes, next) => {
-    if (authToken && req.headers['x-auth-token'] === authToken) {
+  (req, res) => {
+    if (config.AUTH_TOKEN && req.headers['x-auth-token'] === config.AUTH_TOKEN) {
       let request = proxy.makeRequest(req.query.url);
 
-      request.on('error', reqErrorHandler.bind(request, webRes));
-      webRes.on('error', resErrorHandler);
+      request.on('error', reqErrorHandler.bind(request, res));
+      res.on('error', resErrorHandler);
 
-      request.pipe(webRes);
+      request.pipe(res);
     } else {
-      next(errServ.create(400, 'bad request'));
+      res.status(400).send('bad request');
     }
   }
 );
