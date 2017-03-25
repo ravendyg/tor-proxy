@@ -1,9 +1,7 @@
-/// <reference path="./lib/index.d.ts" />
 /* global __dirname */
 'use strict';
 
 var express = require('express');
-var path = require('path');
 
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
@@ -23,25 +21,23 @@ app.use('/echo', echo);
 app.use('/api', apiRoute);
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   var err = new Error('Not Found');
   err.status = 404;
-  next( err );
+  next(err);
 });
 
 // error handlers
 app.use(
-  function(err, req, res, next)
-  {
+  function (err, req, res, next) {
     res.status(err.status || 500);
-    if ( err.status !== 404 )
-    {
-      console.log( (new Date()).toLocaleString() );
+    if (err.status !== 404) {
+      console.log((new Date()).toLocaleString());
       console.error(err);
     }
 
     res
-    .status( err.status )
+    .status(err.status)
     .json({
       message: err.message,
     });
@@ -50,6 +46,7 @@ app.use(
 
 
 module.exports = app;
+
 
 
 // services
