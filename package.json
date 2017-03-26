@@ -6,10 +6,11 @@
     "start": "node ./bin/www"
   },
   "dependencies": {
-    "bluebird": "3.4.6",
+    "bluebird": "^3.4.6",
     "body-parser": "1.15.1",
     "cookie-parser": "1.4.3",
     "express": "4.13.1",
+    "pump": "^1.0.2",
     "request": "2.74.0",
     "serve-favicon": "2.3.0",
     "socks5-http-client": "1.0.2"
