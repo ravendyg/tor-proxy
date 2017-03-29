@@ -1,24 +1,20 @@
-/* global __dirname */
 'use strict';
 
 var express = require('express');
 
-var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
-// var routes = require('./routes/index');
 const echo = require('./routes/echo');
-const apiRoute = require('./routes/api');
+
+const config = require('./lib/config');
 
 var app = express();
 
 
 app.use(bodyParser.json());
-app.use(cookieParser());
 
-// app.use('/', routes);
+
 app.use('/echo', echo);
-app.use('/api', apiRoute);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
@@ -51,5 +47,12 @@ module.exports = app;
 
 // services
 const proxy = require('./lib/proxy');
-proxy.setupEnvironment();
+const proxySettings = {
+  NUMBER_OF_TOR_INSTANCES: config.NUMBER_OF_TOR_INSTANCES,
+  START_TOR_PORT: config.START_TOR_PORT,
+  RESTART_PERIOD: config.RESTART_PERIOD,
+  INSTANCES_USED_SIMULTANEOUSLY: config.INSTANCES_USED_SIMULTANEOUSLY,
+  TOR_TIMEOUT: config.TOR_TIMEOUT
+};
+proxy.setupEnvironment(proxySettings);
 proxy.startService();
