@@ -4,18 +4,13 @@ var express = require('express');
 
 var bodyParser = require('body-parser');
 
-const test = require('./routes/test');
 const echo = require('./routes/echo');
-
-const config = require('./lib/config');
 
 
 var app = express();
 
 app.use(bodyParser.json());
 
-
-app.use('/test', test);
 app.use('/echo', echo);
 
 // catch 404 and forward to error handler

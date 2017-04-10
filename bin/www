@@ -15,6 +15,14 @@ if (cluster.isMaster) {
 
   const rootDir = path.join(__dirname, '..');
   const torDir = path.join(rootDir, 'tor');
+  const dataDir = path.join(torDir, 'data-dir');
+
+  if (!fs.existsSync(torDir)) {
+    fs.mkdirSync(torDir);
+  }
+  if (!fs.existsSync(dataDir)) {
+    fs.mkdirSync(dataDir);
+  }
 
   const files = fs.readdirSync(torDir)
     .filter(e => /torrc\.[0-9]{1,2}/.test(e));
