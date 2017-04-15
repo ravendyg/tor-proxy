@@ -5,6 +5,7 @@ const router = new express.Router();
 
 const verify = require('../lib/auth');
 const {handleCommand} = require('../lib/command');
+const logger = require('../lib/logger');
 
 /**
  * all requests will be received by a random worker
@@ -23,7 +24,7 @@ router.route('/').post(
   (req, res) => {
     const command = req.body;
     if (command) {
-      console.log('received command: ' + JSON.stringify(command));
+      logger.log('received command: ' + JSON.stringify(command));
       handleCommand({command, res});
     } else {
       res.status(400).send();
