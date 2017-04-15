@@ -1,3 +1,4 @@
 node_modules/
 tor
 /lib/config.json
+/npm-debug.log
