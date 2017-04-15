@@ -1,20 +1,16 @@
 /* global process */
 'use strict';
 
-var express = require('express');
-var router = new express.Router();
+const express = require('express');
+const router = new express.Router();
 
-var proxy = require('../lib/proxy');
-const config = require('../lib/config');
+const verify = require('../lib/auth');
+const proxy = require('../lib/proxy');
 
-router.get(
-  '/',
+router.route('/').get(
+  verify,
   (req, res) => {
-    if (config.AUTH_TOKEN && req.headers['x-auth-token'] === config.AUTH_TOKEN) {
-      proxy.makeRequest(req.query.url, res);
-    } else {
-      res.status(400).send('bad request');
-    }
+    proxy.makeRequest(req.query.url, res);
   }
 );
 
