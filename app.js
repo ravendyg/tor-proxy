@@ -6,6 +6,7 @@ var bodyParser = require('body-parser');
 
 const echo = require('./routes/echo');
 const command = require('./routes/command');
+const logger = require('./lib/logger');
 
 
 var app = express();
@@ -24,7 +25,7 @@ app.use(function (req, res) {
 app.use(
   function (err, req, res, next) {
     if (err.status !== 404) {
-      console.log((new Date()).toLocaleString());
+      logger.error('error');
       console.error(err.stack || err);
     }
 
