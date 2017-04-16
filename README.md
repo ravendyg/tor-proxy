@@ -2,19 +2,19 @@ Multiple tor instances manager.
 
 &nbsp;
 
-### Dependecies
-node 6.5.0, tor
+## Dependecies
+node 6.10.2, tor
 
 &nbsp;
 
-### Installation
+## Installation
 ```
 npm i
 ```
 
 &nbsp;
 
-### Setup
+## Setup
 Requires two ports for each tor instance.
 
 To override default config create ./lib/config.json file and put new values there.
@@ -23,13 +23,13 @@ Provide AUTH_TOKEN in config.json
 
 &nbsp;
 
-### Start
+## Start
 ```
 npm start
 ```
 
 
-### Docker
+## Docker
 
 Build
 ```
@@ -38,23 +38,61 @@ docker build -t tor-proxy .
 
 Run
 ```
-docker run -d --name tor-proxy -p 3014:3014 tor-proxy
+docker run -d --name tor-proxy -p 3014:3014 venomyd/tor-proxy // where venomyd is an account name
 
 or
 
 ./docker-run.sh
 ```
 
-### Nginx
-To setup redirect when container is down, but not the server. Nginx would return 502 and cheap DNS load balancing would fail.
+## Balancer
+Each server randomly distribute requests between itself and other servers it aware of.
 
-Add redirect to another IP (at the end of server {}):
-```
-error_page 502 @handle_502;
-location @handle_502 {
-  proxy_pass          http://<another server ip>;
-  proxy_set_header Host $host;
+
+## Commands
+It's possible to perform some remote set up
+
+POST url/command
+body: {
+  action: string,
+  payload: any
 }
-```
 
-If you keep it going form server to server (without falling into a circle!!!), there is a chance of finding a working instance. Just remember not to add redirect to the last one.
+#### Count workers
+action === 'count workers'
+return number of workers running
+{
+  count: number
+}
+
+#### Add worker
+action === 'add worker'
+add a worker and return their number
+{
+  count: number
+}
+
+#### Remove worker
+action === 'remove worker'
+remove a worker and return their number
+if there is no more workers server would shut down since master can't accept requests
+{
+  count: number
+}
+
+#### Get mirrors
+action === 'get mirrors'
+return list of known mirrors (including the server itself as "meself")
+{
+  mirrors: string []
+}
+
+#### Add mirror
+action === 'add mirror'
+patload: string // mirror url
+return 204
+
+#### Remove mirror
+action === 'remove mirror'
+patload: string // mirror url
+return 204  // server itself ("meself") can't be removed

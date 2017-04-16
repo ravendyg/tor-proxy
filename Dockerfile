@@ -1,9 +1,4 @@
 FROM node:6-onbuild
 EXPOSE 3014
 
-ARG AUTH_TOKEN
-ENV AUTH_TOKEN=$AUTH_TOKEN
-ARG WORKERS_COUNT
-ENV WORKERS_COUNT=$WORKERS_COUNT
-
 RUN apt-get update && apt-get install tor -y
