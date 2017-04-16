@@ -38,7 +38,7 @@ docker build -t tor-proxy .
 
 Run
 ```
-docker run -d --name tor-proxy -p 3014:3014 <docker account>/or-proxy
+docker run -d --name tor-proxy -p 3014:3014 venomyd/tor-proxy // where venomyd is an account name
 
 or
 
