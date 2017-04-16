@@ -19,7 +19,7 @@ app.use('/command', command);
 
 // catch 404 and forward to error handler
 app.use(function (req, res) {
-  res.sendStatus(400);
+  res.sendStatus(404);
 });
 
 // error handlers
