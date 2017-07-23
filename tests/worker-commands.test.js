@@ -52,14 +52,14 @@ describe('worker commands service', () => {
     sinon.assert.called(cluster.fork);
   });
 
-  it('esecutes callback on "online"', () => {
+  it('executes callback on "online"', () => {
     workerCommands.startWorker(0, 2, () => {});
     worker = workers[0];
     worker.send.reset();
     worker.emit('online');
     sinon.assert.calledWith(worker.send, sinon.match({
       type: 'run',
-      port: config.START_TOR_PORT
+      counter: 0
     }));
   });
 
