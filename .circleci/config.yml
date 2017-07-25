@@ -1,10 +1,10 @@
 version: 2
 jobs:
-  - build:
-      working_directory: ~/tmp
-      docker:
-        - image: circleci/node: 6
-      steps:
-        - checkout
-        - run: npm i
-        - run: npm t
+   build:
+       # working_directory: ~/tmp
+       docker:
+          - image: circleci/node: 6
+       steps:
+          - checkout
+          - run: npm i
+          # - run: npm t
