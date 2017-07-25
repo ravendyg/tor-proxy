@@ -1,9 +1,10 @@
 {
   "env": {
     "node": true,
-    "browser": true,
+    "browser": false,
     "builtin": true,
-    "es6": true
+    "es6": true,
+    "mocha": true
   },
   "globals": {},
   "rules": {
@@ -61,8 +62,8 @@
       "single"
     ],
     "semi": [
-      0,
-      "never"
+      2,
+      "always"
     ],
     "space-before-blocks": 2,
     "space-before-function-paren": [2, { "anonymous": "always", "named": "never" }],
