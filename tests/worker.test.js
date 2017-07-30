@@ -24,7 +24,10 @@ describe('worker', () => {
     self = new EventEmitter();
     Object.assign(self, {
       exit: sinon.stub(),
-      send: sinon.stub()
+      send: sinon.stub(),
+      env: {
+        COUNTER: counter
+      }
     });
 
     connection = new EventEmitter();
@@ -37,7 +40,10 @@ describe('worker', () => {
 
   it('subscribes to "message"', () => {
     self = {
-      on: sinon.stub()
+      on: sinon.stub(),
+      env: {
+        COUNTER: counter
+      }
     };
     createWorker({
       self,
@@ -47,22 +53,7 @@ describe('worker', () => {
     sinon.assert.calledWith(self.on, 'message');
   });
 
-  it('ensures data exists on "run"', () => {
-    utils.ensureInstanceInfoFile.resetHistory();
-    utils.ensureDataDir.resetHistory();
-
-    createWorker({
-      self,
-      config, server, utils,
-      spawn
-    });
-
-    self.emit('message', {type: 'run', counter});
-    sinon.assert.calledWith(utils.ensureInstanceInfoFile, counter);
-    sinon.assert.calledWith(utils.ensureDataDir, counter);
-  });
-
-  it('starts tor insance on "run"', () => {
+  it('starts tor insance with given counter', () => {
     spawn.resetHistory();
 
     createWorker({
@@ -71,7 +62,6 @@ describe('worker', () => {
       spawn
     });
 
-    self.emit('message', {type: 'run', counter});
     sinon.assert.calledWith(spawn, 'tor', ['-f', './tor/torrc.' + counter], {cwd: global});
   });
 
@@ -85,7 +75,6 @@ describe('worker', () => {
       spawn
     });
 
-    self.emit('message', {type: 'run', counter});
     sinon.assert.notCalled(self.exit);
     self.emit('message', {type: 'close'});
     sinon.assert.calledWith(self.exit, 16);
@@ -101,7 +90,6 @@ describe('worker', () => {
       spawn
     });
 
-    self.emit('message', {type: 'run', counter});
     self.emit('exit');
     sinon.assert.calledWith(connection.kill, 'SIGINT');
   });
@@ -118,7 +106,6 @@ describe('worker', () => {
 
     const error = new Error('test');
 
-    self.emit('message', {type: 'run', counter});
     connection.stderr.emit('data', error);
     sinon.assert.calledWith(connection.kill, 'SIGINT');
     sinon.assert.calledWith(self.send, sinon.match({
@@ -138,7 +125,6 @@ describe('worker', () => {
       spawn
     });
 
-    self.emit('message', {type: 'run', counter});
     connection.stdout.emit('data', 'some data');
     sinon.assert.notCalled(server.listen);
   });
@@ -155,7 +141,6 @@ describe('worker', () => {
       spawn
     });
 
-    self.emit('message', {type: 'run', counter});
     connection.stdout.emit('data', new Buffer('sdf sdfBootstrapped 100%: Done sdfsdf'));
     setTimeout(() => {
       let error;

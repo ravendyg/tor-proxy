@@ -49,18 +49,18 @@ describe('worker commands service', () => {
 
   it('forks', () => {
     workerCommands.startWorker(0, 2, () => {});
-    sinon.assert.called(cluster.fork);
+    sinon.assert.calledWith(cluster.fork, sinon.match({
+        COUNTER: 0
+    }));
   });
 
   it('executes callback on "online"', () => {
-    workerCommands.startWorker(0, 2, () => {});
+    const cb = sinon.stub();
+    workerCommands.startWorker(0, 2, cb);
     worker = workers[0];
     worker.send.reset();
     worker.emit('online');
-    sinon.assert.calledWith(worker.send, sinon.match({
-      type: 'run',
-      counter: 0
-    }));
+    sinon.assert.called(cb);
   });
 
   it('restarts on slow exit and logs an error', () => {
