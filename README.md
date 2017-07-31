@@ -1,4 +1,4 @@
-https://circleci.com/gh/ravendyg/tor-proxy.png?circle-token=ab367138bfdcaf1a6b9bc4d39018d6e0ca7508d4
+![BuildStatus](https://circleci.com/gh/ravendyg/tor-proxy.png?style=shield&circle-token=ab367138bfdcaf1a6b9bc4d39018d6e0ca7508d4)
 
 Multiple tor instances manager.
 
