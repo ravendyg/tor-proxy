@@ -3,9 +3,9 @@
 const {assert} = require('chai');
 const http = require('http');
 const request = require('request');
-const config = require('../lib/config');
+const config = require('../../lib/config');
 
-const createServer = require('../lib/services/server');
+const createServer = require('../../lib/services/server');
 
 const server = createServer({http});
 

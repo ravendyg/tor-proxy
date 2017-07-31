@@ -4,8 +4,8 @@ const asser = require('chai').assert;
 const sinon = require('sinon');
 const {EventEmitter} = require('events');
 
-const config = require('../lib/config');
-const createWorkerCommands = require('../lib/services/worker-commands');
+const config = require('../../lib/config');
+const createWorkerCommands = require('../../lib/services/worker-commands');
 
 let workers = [], worker;
 

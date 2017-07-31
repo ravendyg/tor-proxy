@@ -4,9 +4,9 @@ const asser = require('chai').assert;
 const sinon = require('sinon');
 const path = require('path');
 
-const config = require('../lib/config');
-const utils = require('../lib/utils');
-const createMasterService = require('../lib/services/master');
+const config = require('../../lib/config');
+const utils = require('../../lib/utils');
+const createMasterService = require('../../lib/services/master');
 
 config.NUMBER_OF_TOR_INSTANCES = 3;
 

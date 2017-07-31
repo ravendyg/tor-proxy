@@ -3,10 +3,10 @@
 const sinon = require('sinon');
 const {EventEmitter} = require('events');
 
-const config = require('../lib/config');
-const createWorker = require('../lib/services/worker');
+const config = require('../../lib/config');
+const createWorker = require('../../lib/services/worker');
 
-const enums = require('../lib/enums');
+const enums = require('../../lib/enums');
 
 const utils = {
   ensureInstanceInfoFile: sinon.stub(),
