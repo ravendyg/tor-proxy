@@ -8,8 +8,10 @@ const createWorker = require('../../lib/services/worker');
 
 const enums = require('../../lib/enums');
 
+const counter = 3;
+const torrcFile = './tor/torrc.' + counter;
 const utils = {
-  ensureInstanceInfoFile: sinon.stub(),
+  ensureInstanceInfoFile: sinon.stub().returns(torrcFile),
   ensureDataDir: sinon.stub()
 };
 const server = {
@@ -18,9 +20,11 @@ const server = {
     cb();
   })
 };
-const spawn = sinon.stub();
+const spawn = sinon.stub().returns({
+  stdout: new EventEmitter(),
+  stderr: new EventEmitter(),
+});
 
-const counter = 3;
 let self, connection, messenger;
 
 describe('worker', () => {
@@ -75,7 +79,7 @@ describe('worker', () => {
 
     _createWorker();
 
-    sinon.assert.calledWith(spawn, 'tor', ['-f', './tor/torrc.' + counter], {cwd: global});
+    sinon.assert.calledWith(spawn, 'tor', ['-f', torrcFile], {cwd: global});
   });
 
   it('stops server and exits on RESTART_WORKER message with RESTART code', () => {
