@@ -3,6 +3,7 @@
 const {assert} = require('chai');
 
 const config = require('../../lib/config');
+config.AUTH_TOKEN = 'AUTH_TOKEN';
 const createAuth = require('../../lib/services/auth');
 
 const auth = createAuth({config});
