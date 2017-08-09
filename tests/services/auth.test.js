@@ -3,7 +3,7 @@
 const {assert} = require('chai');
 
 const config = require('../../lib/config');
-config.AUTH_TOKEN = 'AUTH_TOKEN';
+config.API_KEY = 'API_KEY';
 const createAuth = require('../../lib/services/auth');
 
 const auth = createAuth({config});
@@ -18,7 +18,7 @@ describe('auth', () => {
     });
 
     it('returns true if "x-auth-token" header is correct', () => {
-        req.headers['x-auth-token'] = config.AUTH_TOKEN;
+        req.headers['x-auth-token'] = config.API_KEY;
         assert.isTrue(auth.verify(req));
     });
 

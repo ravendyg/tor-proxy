@@ -21,7 +21,7 @@ Requires two ports for each tor instance.
 
 To override default config create ./lib/config.json file and put new values there.
 
-Provide AUTH_TOKEN in config.json
+Provide API_KEY in config.json
 
 &nbsp;
 
