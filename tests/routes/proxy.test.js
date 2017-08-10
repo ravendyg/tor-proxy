@@ -34,10 +34,14 @@ const
         end: sinon.stub()
     },
     URL = require('url'),
+    logger = {
+        log: sinon.stub(),
+        error: sinon.stub()
+    },
     proxyRoute = createProxyRoute({
         self, auth, utils,
         agent, agents,
-        request, pump, URL
+        request, pump, URL, logger
     })
     ;
 
