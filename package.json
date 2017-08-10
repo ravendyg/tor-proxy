@@ -1,24 +1,25 @@
 {
   "name": "tor-proxy",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "test": "./node_modules/.bin/mocha"
+    "test": "mocha ./tests/**/*.test.js",
+    "tdd": "mocha ./tests/**/*.test.js --watch",
+    "run-worker": "COUNTER=1 node ./lib/enter/worker.js"
   },
   "dependencies": {
-    "bluebird": "3.4.6",
-    "body-parser": "1.15.1",
-    "express": "4.13.1",
-    "pump": "1.0.2",
-    "request": "2.74.0",
-    "socks5-http-client": "1.0.2",
-    "socks5-https-client": "1.2.0"
+    "pump": "^1.0.2",
+    "random-ua": "0.0.6",
+    "request": "^2.81.0",
+    "socks5-http-client": "^1.0.2",
+    "socks5-https-client": "^1.2.1"
   },
   "devDependencies": {
-    "chai": "3.5.0",
-    "chai-http": "3.0.0",
-    "eslint": "3.5.0",
-    "mocha": "3.2.0"
+    "chai": "^4.1.1",
+    "chai-http": "^3.0.0",
+    "eslint": "^4.4.1",
+    "mocha": "^3.5.0",
+    "sinon": "^2.3.8"
   }
 }

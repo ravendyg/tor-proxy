@@ -3,9 +3,9 @@
 const cluster = require('cluster');
 
 if (cluster.isMaster) {
-  require('../lib/clustering/master')();
+  require('../lib/enter/master');
 } else {
-  require('../lib/clustering/worker');
+  require('../lib/enter/worker');
 }
 
 
