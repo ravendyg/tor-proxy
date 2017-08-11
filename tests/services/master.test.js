@@ -19,9 +19,12 @@ const execSync = sinon.stub();
 const workerCommands = {
   startWorker: sinon.stub()
 };
+const self = {
+  env: {}
+};
 
 const deps = {
-  config, utils,
+  self, config, utils,
   path, fs, exec, execSync,
   workerCommands
 };
@@ -102,11 +105,27 @@ describe('master service', () => {
   });
 
   it('creates workers', done => {
+    workerCommands.startWorker.resetHistory();
     masterService.run()
     .then(() => {
       sinon.assert.calledWith(workerCommands.startWorker, 0, config.SPAWN_ATTEMPTS);
       sinon.assert.calledWith(workerCommands.startWorker, 1, config.SPAWN_ATTEMPTS);
       sinon.assert.calledWith(workerCommands.startWorker, 2, config.SPAWN_ATTEMPTS);
+      done();
+    })
+    .catch(done);
+  });
+
+  it('uses env.INSTANCE (if provided) to determine number of workers', done => {
+    workerCommands.startWorker.resetHistory();
+    self.env = {
+      INSTANCE: 2
+    };
+    // reset new process
+    masterService = createMasterService(deps);
+    masterService.run()
+    .then(() => {
+      sinon.assert.calledTwice(workerCommands.startWorker);
       done();
     })
     .catch(done);
