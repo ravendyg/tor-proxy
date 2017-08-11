@@ -7,7 +7,7 @@ const config = require('../../lib/config');
 
 const createServer = require('../../lib/services/server');
 
-const server = createServer({http});
+const server = createServer({http, config});
 
 describe('server service', () => {
 

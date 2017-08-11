@@ -32,6 +32,6 @@ npm start
 
 ## TODO
 - Move enter point to index, make console app with `--help` and other cool stuff.
-- Add scheduled restart.
+- Use an object for maintaining workers list
 - Keep track of response times inside of a worker and kill those that would display sluggish behaviour (maybe).
-
+- Create functional tests using `https://2ip.ru` (later)

@@ -4,6 +4,7 @@ const asser = require('chai').assert;
 const sinon = require('sinon');
 const {EventEmitter} = require('events');
 
+const enums = require('../../lib/enums');
 const config = require('../../lib/config');
 const createWorkerCommands = require('../../lib/services/worker-commands');
 
@@ -24,11 +25,11 @@ const cluster = {
 
 const logger = {
   log: sinon.stub(),
-  error: sinon.stub()
+  error: sinon.stub(),
+  debug: sinon.stub()
 };
 
 const deps = {
-  config,
   cluster,
   logger
 };
@@ -86,24 +87,8 @@ describe('worker commands service', () => {
     workerCommands.startWorker(options, () => {}, cb);
     worker = workers[0];
     worker.send.reset();
-    worker.emit('exit', 15);
+    worker.emit('exit', enums.exitCodes.RESTART);
     sinon.assert.called(cb);
-  });
-
-  it('restarts on slow exit and logs an error', () => {
-    const options = {
-      counter: 0,
-      restartsLeft: config.SPAWN_ATTEMPTS,
-      timeToLive: config.RESTART_PERIOD,
-      RESTART_PERIOD: config.RESTART_PERIOD
-    };
-    workerCommands.startWorker(options, () => {}, () => {});
-    worker = workers[0];
-    worker.send.reset();
-    cluster.fork.resetHistory();
-    worker.emit('exit', 15);
-    sinon.assert.called(cluster.fork);
-    sinon.assert.calledWith(logger.error, '0 restart slow');
   });
 
   it('restarts on restart without a log', () => {
@@ -119,7 +104,7 @@ describe('worker commands service', () => {
     cluster.fork.resetHistory();
     logger.error.resetHistory();
     logger.log.resetHistory();
-    worker.emit('exit', 16);
+    worker.emit('exit', enums.exitCodes.RESTART);
     sinon.assert.called(cluster.fork);
     sinon.assert.notCalled(logger.error);
     sinon.assert.notCalled(logger.log);
