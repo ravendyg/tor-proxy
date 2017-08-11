@@ -4,26 +4,44 @@ const asser = require('chai').assert;
 const sinon = require('sinon');
 const path = require('path');
 
-const config = require('../../lib/config');
-const utils = require('../../lib/utils');
+const _config = require('../../lib/config');
+const createUtils = require('../../lib/utils');
 const createMasterService = require('../../lib/services/master');
 
+const config = Object.assign({}, _config);
+config.RESTART_PERIOD = 10;
 config.NUMBER_OF_TOR_INSTANCES = 3;
 
 const fs = {
   existsSync: sinon.stub(),
   mkdirSync: sinon.stub()
 };
-const exec = sinon.stub();
+const exec = sinon.stub().callsFake((command, cb) => {
+  cb(null, 'test', '');
+});
 const execSync = sinon.stub();
+const worker = {
+  send: sinon.stub()
+};
 const workerCommands = {
   startWorker: sinon.stub()
 };
-
+const self = {
+  env: {}
+};
+const math = {
+  random: () => 1.0
+};
+const utils = createUtils({config, path, fs, math});
+const logger = {
+  log: sinon.stub(),
+  error: sinon.stub(),
+  debug: console.log
+};
 const deps = {
-  config, utils,
+  self, config, utils,
   path, fs, exec, execSync,
-  workerCommands
+  workerCommands, logger
 };
 
 let masterService;
@@ -102,14 +120,53 @@ describe('master service', () => {
   });
 
   it('creates workers', done => {
+    workerCommands.startWorker.resetHistory();
     masterService.run()
     .then(() => {
-      sinon.assert.calledWith(workerCommands.startWorker, 0, config.SPAWN_ATTEMPTS);
-      sinon.assert.calledWith(workerCommands.startWorker, 1, config.SPAWN_ATTEMPTS);
-      sinon.assert.calledWith(workerCommands.startWorker, 2, config.SPAWN_ATTEMPTS);
+      const options = {
+        counter: 0,
+        restartsLeft: config.SPAWN_ATTEMPTS
+      };
+      sinon.assert.calledWith(workerCommands.startWorker, sinon.match(options));
+      options.counter = 1;
+      sinon.assert.calledWith(workerCommands.startWorker, sinon.match(options));
+      options.counter = 2;
+      sinon.assert.calledWith(workerCommands.startWorker, sinon.match(options));
       done();
     })
     .catch(done);
+  });
+
+  it('uses env.INSTANCE (if provided) to determine number of workers', done => {
+    workerCommands.startWorker.resetHistory();
+    self.env = {
+      INSTANCE: 2
+    };
+    // reset new process
+    masterService = createMasterService(deps);
+    masterService.run()
+    .then(() => {
+      sinon.assert.calledTwice(workerCommands.startWorker);
+      done();
+    })
+    .catch(done);
+  });
+
+  it('restarts workers regularly', done => {
+      self.env.INSTANCE = 1;
+      worker.send.resetHistory();
+      workerCommands.startWorker.reset();
+      workerCommands.startWorker.callsFake((_, cbOnline) => {
+        cbOnline(worker, 'asdasd');
+      });
+
+      masterService = createMasterService(deps);
+      masterService.run();
+
+      setTimeout(() => {
+        sinon.assert.called(worker.send);
+        done();
+      }, config.RESTART_PERIOD * 1.5);
   });
 
 });

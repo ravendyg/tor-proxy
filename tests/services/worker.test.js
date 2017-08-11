@@ -26,7 +26,8 @@ const spawn = sinon.stub().returns({
 });
 const logger = {
   log: sinon.stub(),
-  error: sinon.stub()
+  error: sinon.stub(),
+  debug: sinon.stub()
 };
 
 let self, connection, messenger;
