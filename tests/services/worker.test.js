@@ -24,6 +24,11 @@ const spawn = sinon.stub().returns({
   stdout: new EventEmitter(),
   stderr: new EventEmitter(),
 });
+const logger = {
+  log: sinon.stub(),
+  error: sinon.stub(),
+  debug: sinon.stub()
+};
 
 let self, connection, messenger;
 
@@ -33,7 +38,7 @@ describe('worker', () => {
     createWorker(Object.assign({
       self,
       config, server, utils, messenger,
-      spawn
+      spawn, logger
     }, deps));
   }
 

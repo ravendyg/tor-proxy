@@ -6,6 +6,7 @@ const
     path = require('path'),
     fs = require('fs'),
 
+    enums = require('../../lib/enums'),
     config = require('../../lib/config'),
     createProxyRoute = require('../../lib/routes/proxy'),
     utils = require('../../lib/utils')({config, fs, path}),
@@ -23,6 +24,9 @@ const
     agents = {},
     request = sinon.stub(),
     pump = sinon.stub(),
+    randomUa = {
+        generate: sinon.stub()
+    },
     createReq = () => ({
         headers: {
             url,
@@ -34,10 +38,18 @@ const
         end: sinon.stub()
     },
     URL = require('url'),
+    logger = {
+        log: sinon.stub(),
+        error: sinon.stub(),
+        debug: sinon.stub()
+    },
+    messenger = {
+        emit: sinon.stub()
+    },
     proxyRoute = createProxyRoute({
         self, auth, utils,
-        agent, agents,
-        request, pump, URL
+        agent, agents, randomUa,
+        request, pump, URL, logger, messenger
     })
     ;
 
@@ -119,6 +131,49 @@ describe('proxy route', () => {
             sinon.assert.calledOnce(request);
             const args = request.getCall(0).args;
             assert.equal(args[0].agentClass, agents);
+        });
+
+        it('generats random proxy', () => {
+            randomUa.generate.resetHistory();
+
+            const req = createReq();
+            req.headers.url = urls;
+            proxyRoute(req, res);
+
+            sinon.assert.calledOnce(randomUa.generate);
+        });
+
+        it('replaces host header with parsed hostname', () => {
+            const req = createReq();
+            req.headers.url = urls;
+            proxyRoute(req, res);
+            const {hostname} = URL.parse(urls);
+
+            assert.equal(request.getCall(0).args[0].headers.host, hostname);
+        });
+
+        it('emits NEW_REQUEST on new request', () => {
+            messenger.emit.resetHistory();
+
+            const req = createReq();
+            req.headers.url = urls;
+            proxyRoute(req, res);
+
+            sinon.assert.calledWith(messenger.emit, enums.messageTypes.NEW_REQUEST);
+        });
+
+        it('emits REQUEST_COMPLETED on request completion', () => {
+            pump.resetHistory();
+
+            const req = createReq();
+            req.headers.url = urls;
+            proxyRoute(req, res);
+
+            messenger.emit.resetHistory();
+            const pumpCb = pump.getCall(0).args[2];
+            sinon.assert.notCalled(messenger.emit);
+            pumpCb();
+            sinon.assert.calledWith(messenger.emit, enums.messageTypes.REQUEST_COMPLETED);
         });
 
     });

@@ -1,4 +1,4 @@
-![BuildStatus](https://circleci.com/gh/ravendyg/tor-proxy.png?style=shield&circle-token=ab367138bfdcaf1a6b9bc4d39018d6e0ca7508d4)
+![BuildStatus](https://circleci.com/gh/ravendyg/tor-proxy.png?style=shield)
 
 Multiple tor instances manager.
 
@@ -30,3 +30,8 @@ Provide API_KEY in config.json
 npm start
 ```
 
+## TODO
+- Move enter point to index, make console app with `--help` and other cool stuff.
+- Use an object for maintaining workers list
+- Keep track of response times inside of a worker and kill those that would display sluggish behaviour (maybe).
+- Create functional tests using `https://2ip.ru` (later)
