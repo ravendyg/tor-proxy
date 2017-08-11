@@ -30,3 +30,8 @@ Provide API_KEY in config.json
 npm start
 ```
 
+## TODO
+- Move enter point to index, make console app with `--help` and other cool stuff.
+- Add scheduled restart.
+- Keep track of response times inside of a worker and kill those that would display sluggish behaviour (maybe).
+
