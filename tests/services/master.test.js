@@ -108,9 +108,17 @@ describe('master service', () => {
     workerCommands.startWorker.resetHistory();
     masterService.run()
     .then(() => {
-      sinon.assert.calledWith(workerCommands.startWorker, 0, config.SPAWN_ATTEMPTS);
-      sinon.assert.calledWith(workerCommands.startWorker, 1, config.SPAWN_ATTEMPTS);
-      sinon.assert.calledWith(workerCommands.startWorker, 2, config.SPAWN_ATTEMPTS);
+      const options = {
+        counter: 0,
+        restartsLeft: config.SPAWN_ATTEMPTS,
+        timeToLive: config.RESTART_PERIOD,
+        RESTART_PERIOD: config.RESTART_PERIOD
+      };
+      sinon.assert.calledWith(workerCommands.startWorker, sinon.match(options));
+      options.counter = 1;
+      sinon.assert.calledWith(workerCommands.startWorker, sinon.match(options));
+      options.counter = 2;
+      sinon.assert.calledWith(workerCommands.startWorker, sinon.match(options));
       done();
     })
     .catch(done);

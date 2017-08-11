@@ -48,23 +48,56 @@ describe('worker commands service', () => {
   });
 
   it('forks', () => {
-    workerCommands.startWorker(0, 2, () => {});
+    const options = {
+      counter: 0,
+      restartsLeft: config.SPAWN_ATTEMPTS,
+      timeToLive: config.RESTART_PERIOD,
+      RESTART_PERIOD: config.RESTART_PERIOD
+    };
+    workerCommands.startWorker(options, () => {}, () => {});
     sinon.assert.calledWith(cluster.fork, sinon.match({
         COUNTER: 0
     }));
   });
 
-  it('executes callback on "online"', () => {
+  it('executes onlineCb callback on "online"', () => {
     const cb = sinon.stub();
-    workerCommands.startWorker(0, 2, cb);
+    const options = {
+      counter: 0,
+      restartsLeft: config.SPAWN_ATTEMPTS,
+      timeToLive: config.RESTART_PERIOD,
+      RESTART_PERIOD: config.RESTART_PERIOD
+    };
+    workerCommands.startWorker(options, cb, () => {});
     worker = workers[0];
     worker.send.reset();
     worker.emit('online');
     sinon.assert.called(cb);
   });
 
+  it('executes offlineCb callback on "exit"', () => {
+    const cb = sinon.stub();
+    const options = {
+      counter: 0,
+      restartsLeft: config.SPAWN_ATTEMPTS,
+      timeToLive: config.RESTART_PERIOD,
+      RESTART_PERIOD: config.RESTART_PERIOD
+    };
+    workerCommands.startWorker(options, () => {}, cb);
+    worker = workers[0];
+    worker.send.reset();
+    worker.emit('exit', 15);
+    sinon.assert.called(cb);
+  });
+
   it('restarts on slow exit and logs an error', () => {
-    workerCommands.startWorker(0, 2, () => {});
+    const options = {
+      counter: 0,
+      restartsLeft: config.SPAWN_ATTEMPTS,
+      timeToLive: config.RESTART_PERIOD,
+      RESTART_PERIOD: config.RESTART_PERIOD
+    };
+    workerCommands.startWorker(options, () => {}, () => {});
     worker = workers[0];
     worker.send.reset();
     cluster.fork.resetHistory();
@@ -74,7 +107,13 @@ describe('worker commands service', () => {
   });
 
   it('restarts on restart without a log', () => {
-    workerCommands.startWorker(0, 2, () => {});
+    const options = {
+      counter: 0,
+      restartsLeft: config.SPAWN_ATTEMPTS,
+      timeToLive: config.RESTART_PERIOD,
+      RESTART_PERIOD: config.RESTART_PERIOD
+    };
+    workerCommands.startWorker(options, () => {}, () => {});
     worker = workers[0];
     worker.send.reset();
     cluster.fork.resetHistory();
