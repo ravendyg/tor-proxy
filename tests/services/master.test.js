@@ -26,9 +26,6 @@ const worker = {
 const workerCommands = {
   startWorker: sinon.stub()
 };
-const self = {
-  env: {}
-};
 const math = {
   random: () => 1.0
 };
@@ -39,7 +36,7 @@ const logger = {
   debug: console.log
 };
 const deps = {
-  self, config, utils,
+  config, utils,
   path, fs, exec, execSync,
   workerCommands, logger
 };
@@ -139,9 +136,7 @@ describe('master service', () => {
 
   it('uses env.INSTANCE (if provided) to determine number of workers', done => {
     workerCommands.startWorker.resetHistory();
-    self.env = {
-      INSTANCE: 2
-    };
+    config.NUMBER_OF_TOR_INSTANCES = 2;
     // reset new process
     masterService = createMasterService(deps);
     masterService.run()
@@ -153,7 +148,7 @@ describe('master service', () => {
   });
 
   it('restarts workers regularly', done => {
-      self.env.INSTANCE = 1;
+      config.NUMBER_OF_TOR_INSTANCES = 1;
       worker.send.resetHistory();
       workerCommands.startWorker.reset();
       workerCommands.startWorker.callsFake((_, cbOnline) => {

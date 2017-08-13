@@ -3,12 +3,13 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www",
+    "start": "node index.js",
     "test": "mocha ./tests/**/*.test.js",
     "tdd": "mocha ./tests/**/*.test.js --watch",
     "run-worker": "COUNTER=1 node ./lib/enter/worker.js"
   },
   "dependencies": {
+    "commander": "^2.11.0",
     "pump": "^1.0.2",
     "random-ua": "0.0.6",
     "request": "^2.81.0",
