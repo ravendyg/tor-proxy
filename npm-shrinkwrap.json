@@ -1,6 +1,6 @@
 {
   "name": "tor-proxy",
-  "version": "0.0.4",
+  "version": "1.0.0",
   "dependencies": {
     "asn1": {
       "version": "0.2.3",
@@ -72,6 +72,11 @@
       "version": "1.0.5",
       "from": "combined-stream@>=1.0.5 <1.1.0",
       "resolved": "https://registry.npmjs.org/combined-stream/-/combined-stream-1.0.5.tgz"
+    },
+    "commander": {
+      "version": "2.11.0",
+      "from": "commander@latest",
+      "resolved": "https://registry.npmjs.org/commander/-/commander-2.11.0.tgz"
     },
     "core-util-is": {
       "version": "1.0.2",
@@ -235,7 +240,7 @@
     },
     "json-stable-stringify": {
       "version": "1.0.1",
-      "from": "json-stable-stringify@>=1.0.1 <2.0.0",
+      "from": "json-stable-stringify@>=1.0.0 <2.0.0",
       "resolved": "https://registry.npmjs.org/json-stable-stringify/-/json-stable-stringify-1.0.1.tgz"
     },
     "json-stringify-safe": {
@@ -484,7 +489,7 @@
     },
     "socks5-http-client": {
       "version": "1.0.2",
-      "from": "socks5-http-client@latest",
+      "from": "socks5-http-client@1.0.2",
       "resolved": "https://registry.npmjs.org/socks5-http-client/-/socks5-http-client-1.0.2.tgz"
     },
     "socks5-https-client": {

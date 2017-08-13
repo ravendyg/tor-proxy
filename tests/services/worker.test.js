@@ -16,9 +16,7 @@ const utils = {
 };
 const server = {
   listen: sinon.stub(),
-  close: sinon.stub().callsFake(cb => {
-    cb();
-  })
+  close: sinon.stub()
 };
 const spawn = sinon.stub().returns({
   stdout: new EventEmitter(),
@@ -30,21 +28,20 @@ const logger = {
   debug: sinon.stub()
 };
 
-let self, connection, messenger;
+let self, connection;
 
 describe('worker', () => {
 
   function _createWorker(deps = {}) {
     createWorker(Object.assign({
       self,
-      config, server, utils, messenger,
+      config, server, utils,
       spawn, logger
     }, deps));
   }
 
   beforeEach(() => {
     self = new EventEmitter();
-    messenger = new EventEmitter();
     Object.assign(self, {
       exit: sinon.stub().callsFake(() => {
         self.emit('exit');
@@ -87,6 +84,21 @@ describe('worker', () => {
     sinon.assert.calledWith(spawn, 'tor', ['-f', torrcFile], {cwd: global});
   });
 
+
+  it('does not exit on RESTART_WORKER message until all request were completed', () => {
+    spawn.resetHistory();
+    spawn.returns(connection);
+    server.close.resetHistory();
+
+    _createWorker();
+
+    self.emit('message', {type: enums.messageTypes.RESTART_WORKER});
+    sinon.assert.calledOnce(server.close);
+    sinon.assert.notCalled(self.exit);
+    server.close.getCall(0).args[0]();
+    sinon.assert.calledOnce(self.exit);
+  });
+
   it('stops server and exits on RESTART_WORKER message with RESTART code', () => {
     spawn.resetHistory();
     spawn.returns(connection);
@@ -96,6 +108,7 @@ describe('worker', () => {
 
     sinon.assert.notCalled(self.exit);
     self.emit('message', {type: enums.messageTypes.RESTART_WORKER});
+    server.close.getCall(0).args[0]();
     sinon.assert.calledOnce(server.close);
     sinon.assert.calledWith(self.exit, enums.exitCodes.RESTART);
   });
@@ -109,6 +122,7 @@ describe('worker', () => {
 
     sinon.assert.notCalled(self.exit);
     self.emit('message', {type: enums.messageTypes.STOP_WORKER});
+    server.close.getCall(0).args[0]();
     sinon.assert.calledOnce(server.close);
     sinon.assert.calledWith(self.exit, enums.exitCodes.STOP);
   });
@@ -174,24 +188,6 @@ describe('worker', () => {
       }
       done(error);
     }, 10);
-  });
-
-  it('does not exit on RESTART_WORKER message until all request were completed', () => {
-    spawn.resetHistory();
-    spawn.returns(connection);
-    server.close.resetHistory();
-
-    _createWorker();
-
-    messenger.emit(enums.messageTypes.NEW_REQUEST);
-
-    self.emit('message', {type: enums.messageTypes.RESTART_WORKER});
-    sinon.assert.calledOnce(server.close);
-    sinon.assert.notCalled(self.exit);
-
-    messenger.emit(enums.messageTypes.REQUEST_COMPLETED);
-    sinon.assert.calledOnce(server.close);
-    sinon.assert.calledWith(self.exit, enums.exitCodes.RESTART);
   });
 
 });
