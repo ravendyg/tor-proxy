@@ -66,7 +66,7 @@ if (cluster.isMaster) {
     configOverride.KEEP_ALIVE_TIMEOUT = program.timeout * 1000;
   }
   if (program.startPort) {
-    configOverride.START_TOR_PORT = program.startPrt;
+    configOverride.START_TOR_PORT = program.startPort;
   }
   if (program.restart) {
     configOverride.SPAWN_ATTEMPTS = program.restart;
