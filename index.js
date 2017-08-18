@@ -30,7 +30,7 @@ if (cluster.isMaster) {
     .option(
       '--start-port <number>',
       'start tor port (incremented by 2) - default: 9060',
-      parseInt,
+      parseint,
       9060
     )
     .option(
@@ -55,7 +55,7 @@ if (cluster.isMaster) {
     ;
 
   const configOverride = {};
-
+console.log(program)
   if (program.workers) {
     configOverride.NUMBER_OF_TOR_INSTANCES = program.workers;
   }
@@ -66,7 +66,7 @@ if (cluster.isMaster) {
     configOverride.KEEP_ALIVE_TIMEOUT = program.timeout * 1000;
   }
   if (program.startPort) {
-    configOverride.START_TOR_PORT = program.startPort;
+    configOverride.START_TOR_PORT = program.startPrt;
   }
   if (program.restart) {
     configOverride.SPAWN_ATTEMPTS = program.restart;
