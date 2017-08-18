@@ -55,7 +55,7 @@ if (cluster.isMaster) {
     ;
 
   const configOverride = {};
-console.log(program)
+
   if (program.workers) {
     configOverride.NUMBER_OF_TOR_INSTANCES = program.workers;
   }
