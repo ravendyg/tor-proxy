@@ -36,17 +36,7 @@ describe('utils', () => {
         'ControlPort ' + (utils.mapCounterToPort(counter) + 1) + '\n' +
         'DataDirectory tor/data-dir/tor' + counter;
 
-    it('checks file existence', () => {
-      deps.fs.existsSync.reset();
-      deps.fs.existsSync.returns(true);
-
-      utils.ensureInstanceInfoFile(counter);
-      sinon.assert.calledWith(deps.fs.existsSync, filePath);
-    });
-
-    it('creates file if does not exist', () => {
-      deps.fs.existsSync.reset();
-      deps.fs.existsSync.returns(false);
+    it('overwrites file', () => {
       deps.fs.writeFileSync.resetHistory();
 
       utils.ensureInstanceInfoFile(counter);
