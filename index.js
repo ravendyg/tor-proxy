@@ -72,10 +72,10 @@ if (cluster.isMaster) {
     configOverride.SPAWN_ATTEMPTS = program.restart;
   }
   if (program.masterPort) {
-    configOverride.MASTER_PORT = program.masterPort;
+    configOverride.PROXY_MASTER_PORT = program.masterPort;
   }
   if (program.workerPort) {
-    configOverride.WORKER_PORT = program.workerPort;
+    configOverride.PROXY_WORKER_PORT = program.workerPort;
   }
 
   require('./lib/enter/master')(configOverride);

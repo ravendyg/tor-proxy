@@ -12,7 +12,7 @@ const server = createServer({http, config});
 describe('server service', () => {
 
   before(done => {
-    server.listen(config.WORKER_PORT, done);
+    server.listen(config.PROXY_WORKER_PORT, done);
   });
 
   it('returns an object with correct methods', () => {
@@ -31,7 +31,7 @@ describe('server service', () => {
     server.addRoute(method, url, handler);
 
     request({
-      url: 'http://localhost:' + config.WORKER_PORT + '/some-path',
+      url: 'http://localhost:' + config.PROXY_WORKER_PORT + '/some-path',
       method
     }, (err, res, body) => {
       assert.equal(res.statusCode, 200);
@@ -44,7 +44,7 @@ describe('server service', () => {
     const method = 'GET';
 
     request({
-      url: 'http://localhost:' + config.WORKER_PORT,
+      url: 'http://localhost:' + config.PROXY_WORKER_PORT,
       method
     }, (err, res) => {
       assert.equal(res.statusCode, 404);
