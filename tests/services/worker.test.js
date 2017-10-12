@@ -177,7 +177,7 @@ describe('worker', () => {
     setTimeout(() => {
       let error;
       try {
-        sinon.assert.calledWith(server.listen, config.WORKER_PORT);
+        sinon.assert.calledWith(server.listen, config.PROXY_WORKER_PORT);
         server.listen.getCall(0).args[1]();
         sinon.assert.calledWith(self.send, sinon.match({
           type: 'listening-report',
