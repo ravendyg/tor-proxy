@@ -29,7 +29,7 @@ describe('server service', () => {
       res.end('test');
     };
     server.addRoute(method, url, handler);
-console.log('http://localhost:' + config.PROXY_WORKER_PORT + '/some-path')
+
     request({
       url: 'http://localhost:' + config.PROXY_WORKER_PORT + '/some-path',
       method
