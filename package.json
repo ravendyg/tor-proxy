@@ -9,17 +9,17 @@
     "run-worker": "COUNTER=1 node ./lib/enter/worker.js"
   },
   "dependencies": {
-    "commander": "^2.11.0",
-    "pump": "^1.0.2",
+    "commander": "^2.12.2",
+    "pump": "^1.0.3",
     "random-ua": "0.0.6",
-    "request": "^2.81.0",
+    "request": "^2.83.0",
     "socks5-http-client": "^1.0.2",
     "socks5-https-client": "^1.2.1"
   },
   "devDependencies": {
     "chai": "^4.1.1",
     "chai-http": "^3.0.0",
-    "eslint": "^4.4.1",
+    "eslint": "^4.14.0",
     "mocha": "^3.5.0",
     "sinon": "^2.3.8"
   }

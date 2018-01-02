@@ -81,7 +81,7 @@ describe('worker', () => {
 
     _createWorker();
 
-    sinon.assert.calledWith(spawn, 'tor', ['-f', torrcFile], {cwd: global});
+    sinon.assert.calledWith(spawn, 'tor', ['-f', torrcFile]);
   });
 
 
